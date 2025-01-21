@@ -1,1 +1,0 @@
-The outlined flexible tour plan for Dhaka includes outdoor activities suited for clear weather, such as visits to historical sites and parks, with indoor alternatives at museums and cultural centers for unexpected weather changes. This plan ensures a diverse experience covering history, culture, nature, and modern attractions.

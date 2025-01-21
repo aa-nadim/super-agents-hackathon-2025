@@ -64,6 +64,34 @@
             }
         }
 
+        /* Results Styles */
+        .results-container {
+            margin-top: 20px;
+            padding: 15px;
+        }
+
+        .result-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .result-section h3 {
+            color: #8B3DFF;
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+
+        .result-content {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
         /* Health Information Section */
         .health-info {
             background: #f0f4ff;
@@ -126,31 +154,15 @@
         }
 
         .chat-messages {
-            max-height: 200px;
+            max-height: 400px;
             overflow-y: auto;
             margin-bottom: 15px;
-        }
-
-        .message {
-            margin: 8px 0;
-            padding: 10px;
-            border-radius: 8px;
-            max-width: 85%;
-        }
-
-        .user-message {
-            background: #8B3DFF;
-            color: white;
-            margin-left: auto;
-        }
-
-        .bot-message {
-            background: #f0f0f0;
         }
 
         .chat-input {
             display: flex;
             gap: 8px;
+            margin-top: 15px;
         }
 
         .chat-input input {
@@ -176,6 +188,23 @@
             transform: scale(1.05);
         }
 
+        /* Modal Header */
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
         body {
             background-image: url('./static/website.png');
 
@@ -193,29 +222,23 @@
 <body>
     <!-- Bot Button -->
     <button class="health-bot-button" id="botButton">
-        <img src="{{ url_for('static', filename='./bot-image-bg.png') }}" alt="Health Bot Assistant" class="bot-image">
+        <img src="{{ url_for('static', filename='bot-image-bg.png') }}" alt="Health Bot Assistant" class="bot-image">
         <span class="bot-text">HEALTH BOT</span>
     </button>
 
     <!-- Modal -->
     <div class="modal" id="botModal">
         <div class="modal-header">
-            <img src="{{ url_for('static', filename='./bot-image-bg.png') }}" alt="Health Bot" style="width: 40px; height: 40px;">
-            <h2 class="modal-title">Maldives Health Assistant</h2>
+            <img src="{{ url_for('static', filename='bot-image-bg.png') }}" alt="Health Bot" style="width: 40px; height: 40px;">
+            <h2 class="modal-title">Travel Health Assistant</h2>
             <button class="modal-close" id="closeModal">×</button>
         </div>
 
         <div class="health-info">
-            <h3>Current Conditions in Maldives</h3>
-            <div class="weather-display">
-                <span>🌡️ 30°C</span>
-                <span>💧 75% Humidity</span>
-                <span>☀️ High UV</span>
-            </div>
-
+            <h3>Travel Health Information</h3>
             <div class="health-alert">
                 <strong>Health Advisory:</strong>
-                <p>No active pandemic alerts. Take standard tropical precautions.</p>
+                <p>Enter a location to get personalized travel health information.</p>
             </div>
         </div>
 
@@ -228,36 +251,40 @@
         </div>
 
         <div class="chat-container">
-            <div class="chat-messages" >
-                <div class="message bot-message">
-                    {% if result %}
-                        <h2>Results:</h2>
-                        <div>{{ result|safe }}</div>
-                    {% endif %}
-                </div>
+            <div class="chat-messages">
+                {% if results %}
+                    <div class="results-container">
+                        {% for result in results %}
+                            <div class="result-section">
+                                <h3>{{ result.title }}</h3>
+                                <div class="result-content">{{ result.content }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
 
             <form method="POST" class="chat-input">
-                <input type="text" id="location" name="location" required placeholder="Type your question or click a prompt above...">
-                <button class="send-button" type="submit">Send</button>
+                <input type="text" id="location" name="location" required placeholder="Enter a location...">
+                <button class="send-button" type="submit">Get Info</button>
             </form>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const botButton = document.getElementById('botButton');
             const modal = document.getElementById('botModal');
             const closeModal = document.getElementById('closeModal');
-            const input = document.querySelector('.chat-input input');
-            const sendButton = document.querySelector('.send-button');
-            const chatMessages = document.getElementById('chatMessages');
             const promptChips = document.querySelectorAll('.prompt-chip');
+            const locationInput = document.getElementById('location');
 
+            // Show modal on page load
             setTimeout(() => {
                 modal.classList.add('active');
-            }, 1500);
+            }, 1000);
 
+            // Toggle modal
             botButton.addEventListener('click', () => {
                 modal.classList.toggle('active');
             });
@@ -266,32 +293,12 @@
                 modal.classList.remove('active');
             });
 
+            // Handle prompt chips
             promptChips.forEach(chip => {
                 chip.addEventListener('click', () => {
-                    input.value = chip.textContent.substring(2);
-                    input.focus();
+                    locationInput.value = chip.textContent.substring(2);
+                    locationInput.focus();
                 });
-            });
-
-            sendButton.addEventListener('click', () => {
-                const message = input.value.trim();
-                if (message) {
-                    const userMessage = document.createElement('div');
-                    userMessage.className = 'message user-message';
-                    userMessage.textContent = message;
-                    chatMessages.appendChild(userMessage);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                    setTimeout(() => {
-                        const botResponse = document.createElement('div');
-                        botResponse.className = 'message bot-message';
-                        botResponse.textContent = `I'll help you find information about ${message}`;
-                        chatMessages.appendChild(botResponse);
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }, 1000);
-
-                    input.value = '';
-                }
             });
         });
     </script>
