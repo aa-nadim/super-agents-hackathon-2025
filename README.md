@@ -9,5 +9,7 @@ source .venv/Scripts/activate # for windows
 
 pip install -r requirements.txt
 
-python Test/test_01.py
+pip install crewai crewai_tools langchain_community ipython setuptools
+
+python app.py
 ```

@@ -1,0 +1,1 @@
+The final flexible tour plan for Dhaka is as described above, encompassing both indoor and outdoor activities with alternatives for any change in weather.
