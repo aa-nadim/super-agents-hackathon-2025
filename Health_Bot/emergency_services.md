@@ -1,34 +1,40 @@
-**Emergency Services in Dhaka, Bangladesh:**
+Here is a list of emergency services in Dhaka:
 
-**Hospitals and Their Specialties:**
+1. **Evercare Hospital Dhaka**
+   - Emergency Services: 24/7
+   - Address: Plot 81, Block E, Bashundhara R/A, Dhaka 1229, Bangladesh
+   - Contact Number: 10678
+   - Website: [Evercare Hospital](https://www.evercarebd.com/emergency-services/)
 
-1. **Green Life Hospital Ltd.**
-   - Address: Green Road, Dhaka, Bangladesh
-   - Specialties: General medicine, surgery, and specialist consultation
-   - 24-Hour Emergency Contact Number: +880-02-9612345-54, 10653
+2. **Dhaka Central International Medical College & Hospital**
+   - Emergency Services: 24/7
+   - Address: 2/1 Ring Road, Shyamoli, Dhaka-1207
+   - Contact Number: +88 02 48117801-2
+   - Website: [Dhaka Central Hospital](https://dcimch.com/hospital/services/emergency/)
+
+3. **Green Life Hospital Ltd.**
+   - Emergency Services: 24/7
+   - Emergency Contact Number: +880-02-9612345-54, 10653
    - Website: [Green Life Hospital](https://greenlifehospital.com.bd/patient-service-facilities/24-hour-emergency-service)
 
-2. **Labaid Specialized Hospital**
-   - Address: Dhanmondi, Dhaka, Bangladesh
-   - Specialties: Cardiology, nephrology, gastroenterology, orthopedics
-   - Phone: Available on their website for appointments and services
-   - Website: [Labaid Specialized Hospital](https://labaidgroup.com/specialized/patient/pharmacy)
+4. **Square Hospitals Ltd**
+   - Emergency Services: 24/7
+   - Address: 18/F, Bir Uttam Qazi Nuruzzaman Sarak, West Panthapath, Dhaka 1205, Bangladesh
+   - Contact Number: 10616, +88 02 8144400
+   - Website: [Square Hospital](https://www.squarehospital.com/)
 
-**24/7 Pharmacies:**
+5. **Better Life Hospital**
+   - Emergency Services: 24/7
+   - Address: Rainbow Building, 06/A/1, Ring Rd, Green Avenue, Dhanmondi, Dhaka 1205, Bangladesh
+   - Contact Number: 10679
+   - Website: [Better Life Hospital](https://www.betterlifehospital.com.bd/)
 
-- Pharmacies attached to major hospitals like Labaid Specialized Hospital offer 24/7 services. These pharmacies are well-stocked with essential and specialized medicines.
+6. **Uttara Crescent Hospital**
+   - Pharmacy Services: 24/7
+   - Address: House 16, Rabindra Sarani, Sector 7, Uttara, Dhaka-1230
+   - Website: [Uttara Crescent Hospital](https://www.uchbd.com/service/12)
 
-**Emergency Contact Numbers:**
+7. **National Emergency Services**
+   - Emergency Contact Number: 999
 
-- **National Emergency Helpline:** 999 
-  - Services available: Police, Fire Service, and Ambulance
-- **Green Life Hospital Emergency:** +880-02-9612345-54, 10653
-
-**General Health Recommendations for Travelers:**
-
-- Ensure vaccinations are up-to-date.
-- Consider travel insurance that covers medical costs.
-- Refer to reliable sources such as CDC and WHO for updates on health risks.
-
-This list provides a general overview of emergency services available in Dhaka, Bangladesh. For travelers, it's important to stay informed and take necessary health precautions prior to and during their travel. Safe travels!
-```
+These facilities offer various medical services and have emergency departments that operate 24/7 to cater to urgent medical needs. Additionally, the provided addresses and contact numbers will be essential in case of emergencies.

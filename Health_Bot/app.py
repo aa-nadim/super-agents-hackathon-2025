@@ -13,10 +13,10 @@ app = Flask(__name__)
 # Set up the LLM, API keys, and agents
 llm = LLM(
     model="gpt-4o",
-    api_key="your-api-key"
+    api_key="your-api-key",
 )
 
-os.environ["SERPER_API_KEY"] = "your serper api key"
+os.environ["SERPER_API_KEY"] = "your-serper-api-key"
 
 search_tool = SerperDevTool()
 
@@ -128,18 +128,13 @@ crew = Crew(
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Get user input for the location
         location = request.form['location']
-
-        # Run the crew with the specified location
         result = crew.kickoff(inputs={"location": location})
-
-        res = str(result)
-        
-        # Return the result as HTML
-        return render_template('index.html', result=res)
+        print(result)
+        return render_template('index.html', result=result)
 
     return render_template('index.html', result='')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
