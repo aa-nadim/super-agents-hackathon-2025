@@ -1,3 +1,5 @@
 .venv
 ollama
 **/__pycache__/
+
+travelers-health-assistant/.env
