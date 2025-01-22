@@ -22,7 +22,7 @@ os.environ["SERPER_API_KEY"] = ""
 
 search_tool = SerperDevTool()
 
-# Define agents (same as before)
+# Define agents
 weather_agent = Agent(
     role='Weather Analyst',
     goal='Accurately predict and analyze weather conditions for the specified location',
@@ -77,6 +77,15 @@ insurance_advisor = Agent(
     llm=llm
 )
 
+supervisor_agent = Agent(
+    role='Travel Advisory Supervisor',
+    goal='Compile and organize all travel advisory information into a comprehensive report',
+    backstory="""You are a senior travel advisor who specializes in creating comprehensive travel reports. You analyze and organize information from various travel experts to create clear, well-structured travel advisory reports.""",
+    tools=[search_tool],
+    verbose=True,
+    llm=llm
+)
+
 def create_task(description, agent, expected_output, context=None):
     return Task(
         description=description,
@@ -110,7 +119,10 @@ def get_travel_advisory():
                 yield f"data: {json.dumps({'error': 'Location is required'})}\n\n"
                 return
             
-            # Create tasks
+            # Store all results for final compilation
+            all_results = []
+            
+            # Create and process individual agent tasks
             tasks = [
                 create_task(
                     f"Analyze current and upcoming weather conditions for {location}.",
@@ -141,14 +153,33 @@ def get_travel_advisory():
                     f"Provide insurance recommendations for {location}.",
                     insurance_advisor,
                     "Insurance recommendations"
+                ),
+                create_task(
+                    f"""Create a comprehensive travel advisory report for {location} by organizing and summarizing the following information:
+                    {json.dumps(all_results, indent=2)}
+                    
+                    Format the report with clear sections for:
+                    - Executive Summary
+                    - Weather Analysis
+                    - Safety Precautions
+                    - Tour Planning
+                    - Medical Risks and Services
+                    - Emergency Services
+                    - Insurance Recommendations
+                    
+                    Format the output in a clear, well-structured manner using Markdown.""",
+                    supervisor_agent,
+                    "Complete travel advisory report"
                 )
             ]
             
             # Process each task and stream results
             for task in tasks:
                 result = process_task(task, location)
+                all_results.append(result)
                 yield f"data: {json.dumps(result)}\n\n"
-                
+            
+            
         except Exception as e:
             yield f"data: {json.dumps({'error': str(e)})}\n\n"
 
