@@ -1,194 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Health Assistant - Chatbot</title>
+    <title>Travel Health Assistant</title>
     <style>
+        /* Body with background image */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
+            background-image: url('./static/website.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100vh;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 100vh;
-            color: #333;
-            overflow: hidden;
+            font-family: 'Arial', sans-serif;
         }
 
-        .chat-container {
-            background-color: white;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 600px;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            overflow: hidden;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .message {
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 75%;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .user-message {
-            background-color: #3498db;
-            color: white;
-            align-self: flex-end;
-        }
-
-        .bot-message {
-            background-color: #ecf0f1;
-            color: #333;
-            align-self: flex-start;
-        }
-
-        .input-area {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            padding: 10px;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px;
-            border-radius: 25px;
-            border: 1px solid #ddd;
-            font-size: 1.1em;
-        }
-
-        input[type="submit"] {
-            padding: 10px 20px;
-            border-radius: 25px;
-            background-color: #3498db;
-            color: white;
-            font-size: 1.1em;
+        /* Bot Button Styles */
+        .health-bot-button {
+            position: fixed;
+            bottom: 70px;
+            right: 100px;
+            background: none;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 9998;
         }
 
-        input[type="submit"]:hover {
-            background-color: #2980b9;
-        }
-
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
+        .bot-image {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            background-color: #fff;
+        }
+
+        /* Modal Styles */
+        .modal {
             display: none;
-            margin: auto;
+            position: fixed;
+            bottom: 190px;
+            right: 100px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            z-index: 9997;
+            width: 380px;
+            max-height: 520px;
+            overflow-y: auto;
+            animation: modalPopIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        @keyframes modalPopIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .send-button {
+            background: #8B3DFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            background: #7B2FEF;
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+            0% {
+                transform: rotate(0deg);
+            }
 
-        @media (max-width: 600px) {
-            .chat-container {
-                height: 90vh;
+            100% {
+                transform: rotate(360deg);
             }
         }
     </style>
 </head>
+
 <body>
-    <div class="chat-container">
-        <div class="chat-box" id="chat-box">
-            <!-- Messages will appear here -->
-        </div>
+    <!-- Bot Button -->
+    <button class="health-bot-button" id="botButton">
+        <img src="./static/bot-image-bg.png" alt="Health Bot Assistant" class="bot-image">
+        <span class="bot-text">HEALTH BOT</span>
+    </button>
 
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Enter your destination..." />
-            <input type="submit" value="Send" onclick="sendMessage()" />
-        </div>
+    <!-- Modal -->
+    <div class="modal" id="botModal">
+        <h2>Travel Health Assistant</h2>
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will appear here -->
+            </div>
 
-        <!-- Loader -->
-        <div id="loader" class="loader"></div>
+            <div class="loader" id="loader"></div>
+            
+            <div class="chat-input">
+                <input type="text" id="location" placeholder="Enter a location..." />
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+            
+        </div>
     </div>
 
     <script>
-        const chatBox = document.getElementById('chat-box');
-        const userInput = document.getElementById('user-input');
-        const loader = document.getElementById('loader');
+        document.addEventListener('DOMContentLoaded', function () {
+            const botButton = document.getElementById('botButton');
+            const modal = document.getElementById('botModal');
+            const sendButton = document.getElementById('sendButton');
+            const loader = document.getElementById('loader');
+            const chatMessages = document.getElementById('chatMessages');
+            const locationInput = document.getElementById('location');
 
-        function displayUserMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', 'user-message');
-            messageDiv.innerText = message;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+            // Toggle modal
+            botButton.addEventListener('click', () => {
+                modal.classList.toggle('active');
+            });
 
-        function displayBotMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', 'bot-message');
-            messageDiv.innerText = message;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+            // Send button functionality
+            sendButton.addEventListener('click', async () => {
+                const location = locationInput.value.trim();
+                if (!location) return;
 
-        async function sendMessage() {
-            const location = userInput.value.trim();
-            if (!location) return;
+                // Display user message
+                const userMessage = document.createElement('div');
+                userMessage.textContent = location;
+                userMessage.style.color = '#3498db';
+                chatMessages.appendChild(userMessage);
 
-            displayUserMessage(location);
-            loader.style.display = 'block';
-            userInput.value = '';
+                // Show loader
+                loader.style.display = 'block';
 
-            try {
-                const response = await fetch('/get_travel_advisory', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        'location': location
-                    })
-                });
+                try {
+                    const response = await fetch('/get_travel_advisory', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ location }),
+                    });
 
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    displayBotMessage(data.final_report);
-                } else {
-                    displayBotMessage("Sorry, there was an error processing your request.");
+                    const data = await response.json();
+
+                    // Display bot response
+                    const botMessage = document.createElement('div');
+                    botMessage.textContent = data.final_report || "No data found.";
+                    botMessage.style.color = '#333';
+                    chatMessages.appendChild(botMessage);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                } finally {
+                    loader.style.display = 'none'; // Hide loader
                 }
-            } catch (error) {
-                displayBotMessage("Sorry, there was an error communicating with the server.");
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-
-        // Add enter key support
-        userInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+            });
         });
     </script>
 </body>
+
 </html>
