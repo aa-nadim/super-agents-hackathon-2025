@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Start EventSource connection
             const eventSource = new EventSource(`/get_travel_advisory?location=${encodeURIComponent(location)}`);
             let completedTasks = 0;
-            const totalTasks = 7; // Total number of agents
+            const totalTasks = 6; // Updated to include supervisor task
 
             eventSource.onmessage = function(event) {
                 const data = JSON.parse(event.data);
@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 progressBar.style.width = `${progress}%`;
 
                 // Display agent message
-                if (data.agent === 'Travel Advisory Supervisor') {
+                if (data.agent >= 'Travel Advisory Supervisor') {
                     appendMessage(data.agent, data.result, 'supervisor-message');
                 } else {
                     appendMessage(data.agent, data.result, 'bot-message');
                 }
 
                 // Close connection when all tasks are complete
-                if (completedTasks === totalTasks) {
+                if (completedTasks >= totalTasks) {
                     eventSource.close();
                     progressContainer.style.display = 'none';
                     
