@@ -10,5 +10,5 @@ pip install -r requirements.txt
 
 
 cd travelers-health-assistant
-python main.py
+python image-to-txt.py
 ```
