@@ -19,11 +19,19 @@ results_cache = TTLCache(maxsize=100, ttl=3600)
 
 # Thread pool for parallel processing
 executor = ThreadPoolExecutor(max_workers=3)
+
+
 # Initialize LLM and other tools
+
 llm = LLM(
-    model="gpt-4o",
-    api_key=""
+    model="ollama/deepseek-r1:1.5b",
+    base_url="http://localhost:11434"
 )
+
+# llm = LLM(
+#     model="gpt-4o",
+#     api_key=""
+# )
 
 os.environ["SERPER_API_KEY"] = "ebf2218969d785f46bed48d0b2bc0cd4232b8642"
 search_tool = SerperDevTool()
@@ -36,7 +44,7 @@ def create_shared_agents():
             goal='Accurately predict and analyze weather conditions',
             backstory="You are an experienced meteorologist with expertise in weather analysis and forecasting.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'safety': Agent(
@@ -44,7 +52,7 @@ def create_shared_agents():
             goal='Provide safety precautions based on weather conditions',
             backstory="You are a travel safety expert with deep knowledge of weather impacts.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'tour': Agent(
@@ -52,7 +60,7 @@ def create_shared_agents():
             goal='Create optimal tour plans considering weather conditions',
             backstory="You are an experienced tour planner who specializes in creating adaptable travel itineraries.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'medical': Agent(
@@ -60,7 +68,7 @@ def create_shared_agents():
             goal='Identify potential medical risks and provide preventive advice',
             backstory="You are a travel medicine specialist who helps travelers understand potential medical issues.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'emergency': Agent(
@@ -68,7 +76,7 @@ def create_shared_agents():
             goal='Provide information about local emergency services and medical facilities',
             backstory="You are a local emergency services expert with knowledge of medical facilities.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'insurance': Agent(
@@ -76,7 +84,7 @@ def create_shared_agents():
             goal='Assess travel insurance needs and provide recommendations',
             backstory="You are an insurance advisor specializing in travel and health insurance.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         ),
         'supervisor': Agent(
@@ -84,7 +92,7 @@ def create_shared_agents():
             goal='Compile and organize all travel advisory information into a comprehensive report',
             backstory="You are a senior travel advisor who specializes in creating comprehensive travel reports.",
             tools=[search_tool],
-            verbose=False,
+            verbose=True,
             llm=llm
         )
     }
